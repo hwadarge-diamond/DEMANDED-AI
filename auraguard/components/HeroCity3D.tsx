@@ -242,20 +242,20 @@ export default function HeroCity3D({ data, riskLevel }: HeroCity3DProps) {
   }, [data, riskLevel, viewMode]);
 
   return (
-    <div className="relative w-full h-[460px] md:h-[540px] rounded-3xl overflow-hidden border border-aura-border bg-gradient-to-b from-[#061014] to-aura-darkest shadow-2xl group">
+    <div className="relative w-full h-[460px] md:h-[540px] rounded-3xl overflow-hidden border border-cyan-500/30 bg-gradient-to-b from-[#061014] to-[#020509] shadow-[0_0_40px_rgba(6,182,212,0.2)] group">
       {/* View Mode 1: Photorealistic Cinematic 8K Metropolis with Live HUD */}
       {viewMode === "cinematic" ? (
         <div className="relative w-full h-full overflow-hidden">
           <img
             src="/images/futuristic_eco_city.jpg"
-            alt="Futuristic Eco-Tech Metropolis Climate Shield"
+            alt="Futuristic Diamond Eco-Tech Metropolis Climate Shield"
             className="w-full h-full object-cover object-center filter brightness-95 contrast-105 scale-100 group-hover:scale-105 transition-transform duration-1000 ease-out"
           />
           {/* Subtle Ambient Vignette & Gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-aura-darkest via-black/30 to-black/50 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#020509] via-black/30 to-black/50 pointer-events-none" />
 
-          {/* Holographic Hexagonal Grid Ambient Overlay */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-cyan-500/10 via-transparent to-transparent pointer-events-none" />
+          {/* Holographic Hexagonal & Diamond Grid Ambient Overlay */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-cyan-500/15 via-transparent to-transparent pointer-events-none" />
         </div>
       ) : (
         /* View Mode 2: Interactive Three.js 60FPS WebGL Canvas */
@@ -264,9 +264,9 @@ export default function HeroCity3D({ data, riskLevel }: HeroCity3DProps) {
 
       {/* Top Left: HUD Status Badges */}
       <div className="absolute top-5 left-5 z-20 flex flex-wrap items-center gap-2 pointer-events-none">
-        <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/70 backdrop-blur-xl border border-cyan-400/30 text-xs font-mono text-cyan-300 shadow-glow">
+        <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/75 backdrop-blur-xl border border-cyan-400/40 text-xs font-mono text-cyan-300 shadow-[0_0_20px_rgba(6,182,212,0.35)]">
           <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping" />
-          <span className="font-bold">AUTONOMOUS CLIMATE-SHIELD GRID</span>
+          <span className="font-bold">DIAMOND CLIMATE-SHIELD GRID</span>
         </div>
         <div className="px-3.5 py-1.5 rounded-full bg-black/60 backdrop-blur-xl border border-white/10 text-xs font-mono text-emerald-400 flex items-center gap-1.5">
           <ShieldCheck className="w-3.5 h-3.5" />
