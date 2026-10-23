@@ -1,0 +1,86 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions for Role-Based Access Control (RBAC)
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function hasRole(role) {
+      return isAuthenticated() && request.auth.token.role == role;
+    }
+
+    function isAdmin() {
+      return hasRole('admin');
+    }
+
+    function isNGO() {
+      return hasRole('ngo_volunteer');
+    }
+
+    function isDonor() {
+      return hasRole('donor');
+    }
+
+    // 1. Donations Collection
+    // Donors can create and view their own; NGOs can view matched donations; Admins have full access.
+    match /donations/{donationId} {
+      allow read: if isAdmin() 
+                  || (isDonor() && resource.data.donor_id == request.auth.uid)
+                  || (isNGO() && (resource.data.status in ['MATCHED', 'DISPATCHED', 'IN_TRANSIT', 'COMPLETED']));
+      
+      allow create: if (isDonor() || isAdmin()) 
+                    && request.resource.data.donor_id == request.auth.uid
+                    && request.resource.data.status == 'PENDING_INTAKE';
+                    
+      allow update: if isAdmin() 
+                    || (isDonor() && resource.data.donor_id == request.auth.uid && resource.data.status == 'PENDING_INTAKE');
+                    
+      allow delete: if isAdmin();
+    }
+
+    // 2. Dispatches & Logistics Collection
+    // Volunteers and NGOs can inspect and update their assigned dispatches.
+    match /dispatches/{dispatchId} {
+      allow read: if isAdmin() 
+                  || (isNGO() && (resource.data.volunteer_id == request.auth.uid || resource.data.ngo_id == request.auth.token.ngo_id));
+      
+      allow create: if isAdmin(); // Created only by Orchestrator or Admin
+      
+      allow update: if isAdmin() 
+                    || (isNGO() && resource.data.volunteer_id == request.auth.uid 
+                        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'current_location', 'delivered_at', 'notes']));
+                        
+      allow delete: if isAdmin();
+    }
+
+    // 3. NGO Profiles & Fleet Capacities
+    match /ngo_profiles/{ngoId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin() || (isNGO() && request.auth.token.ngo_id == ngoId);
+    }
+
+    // 4. Immutable Audit Ledger (Write-protected from all clients)
+    // Only backend server using Admin SDK can append audit records. Clients cannot update or delete.
+    match /audit_logs/{logId} {
+      allow read: if isAdmin();
+      allow write: if false; // STRICT IMMUTABILITY: Clients cannot write directly
+    }
+
+    // 5. System Analytics & Telemetry (Read-only for authenticated users)
+    match /telemetry_summary/{summaryId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+
+    // STRICT DEFAULT DENY: Any path not explicitly matched above is forbidden.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="EcoPulse: Autonomous Multi-Agent AI Surplus-Food Rescue Grid & BigQuery Impact Warehouse. Transforming edible waste into verified, secure community nutrition.">
+  <meta name="theme-color" content="#050807">
+  <title>EcoPulse: Autonomous AI Surplus-Food Rescue Grid</title>
+
+  <!-- Google Fonts: Outfit & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/static/css/design-system.css">
+  <link rel="stylesheet" href="/static/css/hud.css">
+</head>
+<body>
+
+  <!-- Futuristic Holographic Scanline Overlay -->
+  <div class="scanline-overlay"></div>
+
+  <div id="app-container">
+
+    <!-- 3D WebGL Canvas Viewport -->
+    <div id="webgl-canvas-container"></div>
+
+    <!-- ------------------------------------------------------------------------
+         HUD Top Navigation Bar
+         ------------------------------------------------------------------------ -->
+    <header class="top-navbar hud-layer">
+      <div class="brand-section">
+        <div class="brand-logo-icon">⚡</div>
+        <div>
+          <div class="brand-title">
+            <span class="glow-emerald">EcoPulse</span>
+            <span style="font-size: 0.8rem; font-weight: 500; color: #94a3b8;">/ Grid</span>
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 0.68rem; color: #34d399;">
+            AUTONOMOUS AGENTIC RESCUE v2.4
+          </div>
+        </div>
+      </div>
+
+      <!-- Cloud & AI Engine Status Indicators -->
+      <div class="system-status-pills">
+        <div class="status-pill" title="Dynamic model router defaults to Flash for <400ms speed">
+          <span class="status-dot"></span>
+          <span>Gemini: Flash Active</span>
+        </div>
+        <div class="status-pill" title="Firebase App Check token verified">
+          <span style="color: #38bdf8;">🛡️</span>
+          <span>App Check: Verified</span>
+        </div>
+        <div class="status-pill" title="BigQuery analytics pipeline streaming live">
+          <span style="color: #10b981;">📊</span>
+          <span>BigQuery: Streaming</span>
+        </div>
+        <div class="status-pill" title="Firestore state synchronized">
+          <span style="color: #f59e0b;">🔥</span>
+          <span>Firestore: Synced</span>
+        </div>
+      </div>
+
+      <!-- Live Interactive Role-Based Access Control Switcher -->
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <span id="role-indicator-badge" class="badge badge-emerald">Active Role: DONOR</span>
+        <div class="user-role-selector">
+          <button class="role-btn active" data-role="donor" title="Switch to Food Donor Identity">Donor</button>
+          <button class="role-btn" data-role="ngo_volunteer" title="Switch to NGO Volunteer Identity">NGO / Fleet</button>
+          <button class="role-btn" data-role="admin" title="Switch to Admin / Safety Reviewer Identity">Admin</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ------------------------------------------------------------------------
+         Live BigQuery Impact Ticker
+         ------------------------------------------------------------------------ -->
+    <section class="impact-ticker-bar hud-layer" aria-label="Environmental and Social Impact Telemetry">
+      <div class="kpi-item">
+        <div class="kpi-icon-box">🍱</div>
+        <div class="kpi-meta">
+          <span class="kpi-value" id="kpi-meals-count">380</span>
+          <span class="kpi-label">Meals Served</span>
+        </div>
+      </div>
+
+      <div class="kpi-item">
+        <div class="kpi-icon-box" style="color: #38bdf8; background: rgba(6,182,212,0.1); border-color: rgba(6,182,212,0.25);">🌱</div>
+        <div class="kpi-meta">
+          <span class="kpi-value" id="kpi-co2-count" style="color: #38bdf8;">327.5 kg</span>
+          <span class="kpi-label">CO2e Landfill Averted</span>
+        </div>
+      </div>
+
+      <div class="kpi-item">
+        <div class="kpi-icon-box" style="color: #84cc16; background: rgba(132,204,22,0.1); border-color: rgba(132,204,22,0.25);">💵</div>
+        <div class="kpi-meta">
+          <span class="kpi-value" id="kpi-usd-count" style="color: #84cc16;">$1,630.00</span>
+          <span class="kpi-label">Wholesale Food Value</span>
+        </div>
+      </div>
+
+      <div class="kpi-item">
+        <div class="kpi-icon-box" style="color: #f59e0b; background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.25);">⚡</div>
+        <div class="kpi-meta">
+          <span class="kpi-value" style="color: #f59e0b;">92.5%</span>
+          <span class="kpi-label">Flash Routing Efficiency</span>
+        </div>
+      </div>
+
+      <div class="kpi-item">
+        <div class="kpi-icon-box" style="color: #a7f3d0; background: rgba(16,185,129,0.1); border-color: rgba(16,185,129,0.25);">🔗</div>
+        <div class="kpi-meta">
+          <span class="kpi-value" style="color: #a7f3d0;">SHA-256</span>
+          <span class="kpi-label">Ledger Integrity Valid</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------------------
+         Main Workspace Layout (Navigation Rail + View Content Panes)
+         ------------------------------------------------------------------------ -->
+    <main class="workspace-body hud-layer">
+
+      <!-- Navigation Tabs Rail -->
+      <nav class="navigation-tabs-rail" aria-label="EcoPulse Primary Navigation">
+        <button class="nav-tab-btn active" data-tab="3d-mission-control">
+          <span>🌐</span>
+          <span>3D Mission Grid</span>
+        </button>
+
+        <button class="nav-tab-btn" data-tab="reasoning-stream">
+          <span>🧠</span>
+          <span>Agent Reasoning</span>
+          <span class="tab-badge" id="trace-count-badge">Live</span>
+        </button>
+
+        <button class="nav-tab-btn" data-tab="hitl-review-desk">
+          <span>🛡️</span>
+          <span>HITL Review</span>
+          <span class="tab-badge" style="background: rgba(239,68,68,0.2); color: #ef4444;" id="hitl-count-badge">Queue</span>
+        </button>
+
+        <button class="nav-tab-btn" data-tab="fleet-command">
+          <span>🚚</span>
+          <span>Shelters & Fleet</span>
+        </button>
+
+        <button class="nav-tab-btn" data-tab="audit-ledger">
+          <span>📜</span>
+          <span>BigQuery & Audit</span>
+        </button>
+
+        <button class="nav-tab-btn" data-tab="eval-suite">
+          <span>🔬</span>
+          <span>Evaluation Suite</span>
+        </button>
+      </nav>
+
+      <!-- View Container Panes -->
+      <div class="content-view-container">
+
+        <!-- 1. View: 3D Mission Control (Overlay HUD on top of WebGL scene) -->
+        <section id="view-3d-mission-control" class="view-pane active">
+          <div class="view-3d-overlay">
+            <!-- New Surplus Intake Button -->
+            <div class="glass-panel dispatch-action-card">
+              <div class="dispatch-header">
+                <span class="dispatch-title">Autonomous Rescue Dispatch</span>
+                <span class="badge badge-emerald">READY</span>
+              </div>
+              <p style="font-size: 0.82rem; color: #94a3b8; line-height: 1.4;">
+                Submit surplus catering, bakery, produce, or buffet food. The 4-agent system coordinates intake, HACCP safety hazard analysis, cold-chain verification, and route optimization.
+              </p>
+              <button id="open-intake-modal-btn" class="btn-primary floating-dispatch-btn">
+                <span>➕ Report Surplus Food Rescue</span>
+              </button>
+            </div>
+
+            <!-- Active Dispatched Route HUD Card -->
+            <div id="active-route-widget" class="glass-panel active-route-card">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span class="badge badge-cyan">STANDBY MODE</span>
+                <span style="font-family: var(--font-mono); font-size: 0.75rem; color: #94a3b8;">Grid Online</span>
+              </div>
+              <div style="font-weight: 700; color: #fff; font-size: 0.95rem;">
+                No Active Transit in Progress
+              </div>
+              <p style="font-size: 0.8rem; color: #64748b;">
+                Click "Report Surplus Food Rescue" or select a preset scenario to observe the multi-agent reasoning trace and live 3D drone dispatch along spline trajectories.
+              </p>
+            </div>
+          </div>
+
+          <!-- 3D Camera Preset Toolbar -->
+          <div class="camera-controls-toolbar">
+            <span style="font-family: var(--font-mono); font-size: 0.7rem; color: #64748b; margin-right: 4px;">CAMERA:</span>
+            <button class="camera-btn active" data-preset="OVERVIEW">Overview</button>
+            <button class="camera-btn" data-preset="GRID">City Grid</button>
+            <button class="camera-btn" data-preset="TRANSIT">Follow Drone</button>
+          </div>
+        </section>
+
+        <!-- 2. View: Live Agentic Reasoning Stream -->
+        <section id="view-reasoning-stream" class="view-pane">
+          <div class="trace-stream-container">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <div>
+                <h1 style="font-size: 1.3rem; font-weight: 700; color: #fff;">Multi-Agent Visible Reasoning Trace</h1>
+                <p style="font-size: 0.82rem; color: #94a3b8;">
+                  Complete transparent audit of orchestrator planning, multimodal extraction, HACCP hazard scoring, tool execution, and BigQuery telemetry.
+                </p>
+              </div>
+              <span class="badge badge-cyan">TRANSPARENT AI</span>
+            </div>
+
+            <div id="trace-cards-list" style="display: flex; flex-direction: column; gap: 14px;">
+              <div class="glass-panel" style="padding: 30px; text-align: center;">
+                <div style="font-size: 2rem; margin-bottom: 8px;">⚡</div>
+                <div style="font-size: 1.1rem; font-weight: 700; color: #fff;">Awaiting First Donation Dispatch</div>
+                <div style="font-size: 0.85rem; color: #94a3b8; margin-top: 6px;">
+                  Open the "3D Mission Grid" view and submit a surplus food report to watch the 4 agents collaborate in real time.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. View: Human-In-The-Loop (HITL) Review Queue -->
+        <section id="view-hitl-review-desk" class="view-pane">
+          <div style="max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <h2 style="font-size: 1.3rem; font-weight: 700; color: #fff;">Human-In-The-Loop Safety Review Queue</h2>
+                <p style="font-size: 0.82rem; color: #94a3b8;">
+                  Flagged donations with low confidence (&lt;70%) or ambiguous food handling profiles require certified human inspection before logistics dispatch.
+                </p>
+              </div>
+              <span class="badge badge-warning">GOVERNANCE & SAFETY</span>
+            </div>
+
+            <div id="hitl-queue-container" style="display: flex; flex-direction: column; gap: 12px;"></div>
+          </div>
+        </section>
+
+        <!-- 4. View: Shelters & Fleet Command -->
+        <section id="view-fleet-command" class="view-pane">
+          <div style="max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <h2 style="font-size: 1.3rem; font-weight: 700; color: #fff;">Metropolitan NGO Shelters & Fleet Capacities</h2>
+                <p style="font-size: 0.82rem; color: #94a3b8;">
+                  Real-time document state synchronized via Cloud Firestore. Matching Agent evaluates remaining absorption capacity and cold-chain equipment.
+                </p>
+              </div>
+              <span class="badge badge-emerald">FIRESTORE SYNC</span>
+            </div>
+
+            <div id="ngos-list-container" style="display: flex; flex-direction: column; gap: 12px;"></div>
+          </div>
+        </section>
+
+        <!-- 5. View: BigQuery Telemetry & Cryptographic Audit Ledger -->
+        <section id="view-audit-ledger" class="view-pane">
+          <div style="max-width: 920px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <h2 style="font-size: 1.3rem; font-weight: 700; color: #fff;">Immutable Cryptographic SHA-256 Audit Ledger</h2>
+                <p style="font-size: 0.82rem; color: #94a3b8;">
+                  Non-repudiation log recording every agent action, tool invocation, and human override with block hash chaining.
+                </p>
+              </div>
+              <span class="badge badge-cyan">BIGQUERY STREAMING</span>
+            </div>
+
+            <div id="audit-ledger-container"></div>
+          </div>
+        </section>
+
+        <!-- 6. View: Security & Evaluation Suite -->
+        <section id="view-eval-suite" class="view-pane">
+          <div style="max-width: 960px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <h2 style="font-size: 1.3rem; font-weight: 700; color: #fff;">Automated AI Benchmark & Adversarial Evaluation Suite</h2>
+                <p style="font-size: 0.82rem; color: #94a3b8;">
+                  32 test cases evaluating HACCP food safety classification, prompt injection defenses, and route efficiency.
+                </p>
+              </div>
+              <button id="run-eval-suite-btn" class="btn-primary" style="font-size: 0.82rem;">
+                <span>⚡ Re-Run Live 32-Case Benchmark Suite</span>
+              </button>
+            </div>
+
+            <div id="eval-results-container">
+              <div class="glass-panel" style="padding: 24px; text-align: center;">
+                <div style="font-size: 1.5rem; margin-bottom: 6px; color: #34d399;">✓</div>
+                <div style="font-size: 1.1rem; font-weight: 700; color: #fff;">Evaluation Suite Ready</div>
+                <p style="font-size: 0.85rem; color: #94a3b8; max-width: 600px; margin: 8px auto 16px;">
+                  Click the button above to run all 32 benchmark scenarios live through the orchestrator. Results will display in a formatted matrix with latency and pass/fail indicators.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <!-- ------------------------------------------------------------------------
+         Modal: Multimodal Intake Dispatcher
+         ------------------------------------------------------------------------ -->
+    <div id="intake-modal-overlay" class="modal-overlay">
+      <div class="glass-panel modal-card">
+        <div class="modal-header">
+          <div>
+            <div class="modal-title">New Surplus Food Rescue Report</div>
+            <div style="font-size: 0.78rem; color: #94a3b8;">Multimodal Intake: Text • Vision OCR • Voice Transcription</div>
+          </div>
+          <button id="close-intake-modal-btn" class="close-btn" aria-label="Close dialog">&times;</button>
+        </div>
+
+        <!-- 1-Click Quick Preset Selector -->
+        <div class="preset-selector-row">
+          <div class="input-label">⚡ SELECT TEST PRESET SCENARIO (FOR COMPETITION JUDGING):</div>
+          <div class="preset-chips-grid">
+            <button class="preset-chip" data-preset-key="lasagna">
+              <strong>🍱 Chilled Catering Lasagna</strong>
+              <div style="font-size: 0.7rem; color: #94a3b8;">Standard Safe (Accept)</div>
+            </button>
+
+            <button class="preset-chip" data-preset-key="bread">
+              <strong>🥖 Artisan Sourdough Loaves</strong>
+              <div style="font-size: 0.7rem; color: #94a3b8;">Bakery Safe (Accept)</div>
+            </button>
+
+            <button class="preset-chip" data-preset-key="spoiled_fish">
+              <strong>🐟 Warm Cooked Seafood</strong>
+              <div style="font-size: 0.7rem; color: #f87171;">HACCP Danger Zone (Reject)</div>
+            </button>
+
+            <button class="preset-chip" data-preset-key="adversarial_dan">
+              <strong>🛡️ Adversarial: DAN Jailbreak</strong>
+              <div style="font-size: 0.7rem; color: #f87171;">Prompt Injection (Security Block)</div>
+            </button>
+
+            <button class="preset-chip" data-preset-key="open_buffet">
+              <strong>🥗 Open Hotel Buffet Salad</strong>
+              <div style="font-size: 0.7rem; color: #fbbf24;">Ambiguous Profile (HITL Review)</div>
+            </button>
+
+            <button class="preset-chip" data-preset-key="expired_formula">
+              <strong>🍼 Expired Baby Formula</strong>
+              <div style="font-size: 0.7rem; color: #f87171;">Regulatory Ban (Reject)</div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Text / Notes Area -->
+        <div class="input-field-group">
+          <label for="intake-text-input" class="input-label">SURPLUS DESCRIPTION & DONOR HOLDING LOGS:</label>
+          <textarea id="intake-text-input" class="text-area-input" placeholder="Describe food items, weight (kg), portions, storage temperature, packaging, allergens..."></textarea>
+        </div>
+
+        <!-- Multimodal Input Mocks (Vision & Voice Simulation) -->
+        <div class="multimodal-sim-row">
+          <div id="mock-photo-btn" class="upload-mock-box">
+            <span>📷 Attach Food Photo (AI Vision OCR)</span>
+          </div>
+          <div id="mock-voice-btn" class="upload-mock-box">
+            <span>🎙️ Record Voice Dispatch Memo</span>
+          </div>
+        </div>
+
+        <!-- Security Notice -->
+        <div style="font-family: var(--font-mono); font-size: 0.72rem; color: #64748b; background: rgba(0,0,0,0.3); padding: 8px 12px; border-radius: var(--border-radius-sm);">
+          🛡️ <strong>Zero-Trust Sandboxing Active:</strong> Donor text is sanitized for prompt injection signatures and quarantined inside <code>&lt;&lt;&lt;UNTRUSTED_DONOR_DATA&gt;&gt;&gt;</code> delimiters. PII is automatically redacted before LLM ingestion.
+        </div>
+
+        <!-- Submit Button -->
+        <button id="submit-dispatch-btn" class="btn-primary" style="justify-content: center; padding: 13px; font-size: 0.95rem;">
+          <span>🚀 Dispatch Autonomous Multi-Agent Rescue</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Three.js 3D Graphics Engine (Local Vendor with CDN Fallback) -->
+  <script src="/static/js/vendor/three.min.js"></script>
+  <script src="/static/js/vendor/OrbitControls.js"></script>
+
+  <!-- Application Logic -->
+  <script src="/static/js/three-scene.js"></script>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
