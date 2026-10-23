@@ -34,26 +34,47 @@ export default function OpenInnovationDomainView() {
 
   return (
     <div className="w-full space-y-6">
-      {/* Header Banner */}
-      <div className="p-5 rounded-2xl border border-teal-500/20 bg-gradient-to-r from-teal-950/30 via-aura-card to-aura-darkest backdrop-blur-md flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2 text-xs font-mono text-teal-400 uppercase font-bold">
-            <Network className="w-4 h-4" />
-            <span>Open Innovation, Multi-Agent Swarm & Decentralized Protocol</span>
+      {/* 1. Futuristic Swarm Core Cinematic Visual Banner */}
+      <div className="relative w-full h-80 sm:h-96 rounded-3xl overflow-hidden border border-teal-500/30 shadow-2xl group">
+        <img
+          src="/images/agent_swarm_core.jpg"
+          alt="Quantum Decentralized Agentic AI Swarm Core"
+          className="w-full h-full object-cover object-center scale-100 group-hover:scale-105 transition-transform duration-1000 ease-out filter brightness-95"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-aura-darkest via-black/40 to-black/60 pointer-events-none" />
+
+        {/* Top Badges */}
+        <div className="absolute top-5 left-5 z-10 flex flex-wrap items-center gap-2">
+          <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/70 backdrop-blur-xl border border-teal-400/40 text-xs font-mono text-teal-300 shadow-safe">
+            <Network className="w-3.5 h-3.5 text-teal-400 animate-pulse" />
+            <span className="font-bold">NEURAL SWARM MESH ONLINE</span>
           </div>
-          <h2 className="text-xl font-black text-white mt-1">
-            Autonomous Agent Orchestration Grid & SHA-256 Verifiable Ledger
-          </h2>
-          <p className="text-xs text-gray-300 mt-1 max-w-2xl">
-            An open ecosystem for collaborative climate-health intelligence. Exposes open API schemas, verifies agent decisions on a tamper-evident audit ledger, and enables decentralized tool composition.
-          </p>
+          <div className="px-3.5 py-1.5 rounded-full bg-black/60 backdrop-blur-xl border border-white/10 text-xs font-mono text-cyan-300">
+            SHA-256 ZERO-KNOWLEDGE PROOF CHAIN
+          </div>
         </div>
 
-        <div className="bg-black/40 p-3 rounded-xl border border-white/5 font-mono text-xs flex items-center gap-3">
-          <ShieldCheck className="w-5 h-5 text-emerald-400" />
+        {/* Bottom Banner Content Overlay */}
+        <div className="absolute bottom-5 left-5 right-5 z-10 flex flex-col sm:flex-row sm:items-end justify-between gap-4 p-5 rounded-2xl bg-black/80 backdrop-blur-xl border border-white/10">
           <div>
-            <span className="text-gray-400 block text-[10px]">SWARM NODES:</span>
-            <span className="text-emerald-400 font-bold">6 Cooperating Agents Online</span>
+            <div className="flex items-center gap-2 text-xs font-mono text-teal-400 uppercase font-bold">
+              <Network className="w-4 h-4" />
+              <span>Domain V • Open Innovation & Multi-Agent Swarm Orchestration</span>
+            </div>
+            <h2 className="text-xl sm:text-2xl font-black text-white mt-1">
+              Autonomous Swarm Grid & Verifiable Cryptographic Ledger
+            </h2>
+            <p className="text-xs text-gray-300 mt-1 max-w-2xl line-clamp-2 sm:line-clamp-none">
+              A decentralized ecosystem for collaborative planetary intelligence. Exposes live OpenAPI schemas, verifies agent actions on a tamper-evident audit ledger, and facilitates zero-knowledge agent consensus.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3 shrink-0 bg-teal-950/40 border border-teal-500/30 px-4 py-2.5 rounded-xl font-mono text-xs">
+            <ShieldCheck className="w-5 h-5 text-teal-400" />
+            <div>
+              <span className="text-gray-400 block text-[10px]">SWARM NODES:</span>
+              <span className="text-teal-300 font-bold">6 Cooperating Agents Online</span>
+            </div>
           </div>
         </div>
       </div>

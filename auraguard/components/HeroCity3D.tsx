@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { EnvironmentalData, RiskLevel } from "@/lib/types";
+import { Eye, Layers, ShieldCheck, Sparkles, Orbit } from "lucide-react";
 
 interface HeroCity3DProps {
   data: EnvironmentalData;
@@ -11,8 +12,10 @@ interface HeroCity3DProps {
 
 export default function HeroCity3D({ data, riskLevel }: HeroCity3DProps) {
   const mountRef = useRef<HTMLDivElement>(null);
+  const [viewMode, setViewMode] = useState<"cinematic" | "3d">("cinematic");
 
   useEffect(() => {
+    if (viewMode !== "3d") return;
     const container = mountRef.current;
     if (!container) return;
 
@@ -60,9 +63,7 @@ export default function HeroCity3D({ data, riskLevel }: HeroCity3DProps) {
     const gridSize = 14;
     const count = gridSize * gridSize;
     const boxGeometry = new THREE.BoxGeometry(1.8, 1, 1.8);
-    const edgesGeometry = new THREE.EdgesGeometry(boxGeometry);
 
-    // Color themes based on Risk Level
     const primaryGlowColor =
       riskLevel === "SEVERE"
         ? 0xef4444
@@ -79,13 +80,6 @@ export default function HeroCity3D({ data, riskLevel }: HeroCity3DProps) {
     });
 
     const instancedMesh = new THREE.InstancedMesh(boxGeometry, buildingMaterial, count);
-    const edgeLinesMaterial = new THREE.LineBasicMaterial({
-      color: primaryGlowColor,
-      transparent: true,
-      opacity: 0.6,
-    });
-
-    const matrix = new THREE.Matrix4();
     const position = new THREE.Vector3();
     const scale = new THREE.Vector3();
     const dummy = new THREE.Object3D();
@@ -130,7 +124,7 @@ export default function HeroCity3D({ data, riskLevel }: HeroCity3DProps) {
     shieldDome.position.y = 0;
     scene.add(shieldDome);
 
-    // 8. Particulate & Smog Particles (Drifting atmospheric particles)
+    // 8. Particulate & Smog Particles
     const particleCount = data.pm25 > 50 ? 500 : 220;
     const particleGeo = new THREE.BufferGeometry();
     const particlePositions = new Float32Array(particleCount * 3);
@@ -156,7 +150,7 @@ export default function HeroCity3D({ data, riskLevel }: HeroCity3DProps) {
     const particleSystem = new THREE.Points(particleGeo, particleMat);
     scene.add(particleSystem);
 
-    // 9. Floating Celestial Sun with Heat Flare
+    // 9. Floating Celestial Sun
     const sunCoreGeo = new THREE.SphereGeometry(data.uvIndex > 8 ? 4.2 : 2.8, 16, 16);
     const sunCoreMat = new THREE.MeshBasicMaterial({
       color: sunColor,
@@ -168,7 +162,7 @@ export default function HeroCity3D({ data, riskLevel }: HeroCity3DProps) {
     sunMesh.position.set(30, 42, -20);
     scene.add(sunMesh);
 
-    // 10. Mouse Parallax & Interaction
+    // 10. Mouse Parallax
     let mouseX = 0;
     let mouseY = 0;
     let targetX = 0;
@@ -190,7 +184,6 @@ export default function HeroCity3D({ data, riskLevel }: HeroCity3DProps) {
       animationFrameId = requestAnimationFrame(animate);
       const elapsed = clock.getElapsedTime();
 
-      // Camera gentle orbit + mouse parallax
       targetX += (mouseX * 12 - targetX) * 0.04;
       targetY += (-mouseY * 8 - targetY) * 0.04;
 
@@ -201,27 +194,23 @@ export default function HeroCity3D({ data, riskLevel }: HeroCity3DProps) {
       camera.position.y = 20 + Math.sin(elapsed * 0.3) * 2 + targetY;
       camera.lookAt(0, 3, 0);
 
-      // Pulse shield dome
       const pulseRate = riskLevel === "SEVERE" ? 4.0 : riskLevel === "HIGH" ? 2.5 : 1.2;
       const pulseScale = 1.0 + Math.sin(elapsed * pulseRate) * 0.02;
       shieldDome.scale.set(pulseScale, pulseScale, pulseScale);
       shieldDome.rotation.y = elapsed * 0.04;
 
-      // Animate drifting particulate smog
       const positions = particleGeo.attributes.position.array as Float32Array;
       for (let i = 0; i < particleCount; i++) {
         positions[i * 3] += particleVelocities[i * 3];
         positions[i * 3 + 1] += Math.sin(elapsed + i) * 0.01;
         positions[i * 3 + 2] += particleVelocities[i * 3 + 2];
 
-        // Wrap around bounds
         if (Math.abs(positions[i * 3]) > 25) positions[i * 3] *= -0.95;
         if (positions[i * 3 + 1] < 0 || positions[i * 3 + 1] > 22) positions[i * 3 + 1] = Math.random() * 15;
         if (Math.abs(positions[i * 3 + 2]) > 25) positions[i * 3 + 2] *= -0.95;
       }
       particleGeo.attributes.position.needsUpdate = true;
 
-      // Rotate sun
       sunMesh.rotation.y = elapsed * 0.2;
       sunMesh.rotation.x = elapsed * 0.1;
 
@@ -230,7 +219,6 @@ export default function HeroCity3D({ data, riskLevel }: HeroCity3DProps) {
 
     animate();
 
-    // 12. Handle Resize
     const handleResize = () => {
       if (!container) return;
       width = container.clientWidth;
@@ -251,51 +239,99 @@ export default function HeroCity3D({ data, riskLevel }: HeroCity3DProps) {
       }
       renderer.dispose();
     };
-  }, [data, riskLevel]);
+  }, [data, riskLevel, viewMode]);
 
   return (
-    <div className="relative w-full h-[420px] md:h-[480px] rounded-2xl overflow-hidden border border-aura-border bg-gradient-to-b from-[#061014] to-aura-darkest shadow-2xl">
-      <div ref={mountRef} className="w-full h-full cursor-grab active:cursor-grabbing" />
+    <div className="relative w-full h-[460px] md:h-[540px] rounded-3xl overflow-hidden border border-aura-border bg-gradient-to-b from-[#061014] to-aura-darkest shadow-2xl group">
+      {/* View Mode 1: Photorealistic Cinematic 8K Metropolis with Live HUD */}
+      {viewMode === "cinematic" ? (
+        <div className="relative w-full h-full overflow-hidden">
+          <img
+            src="/images/futuristic_eco_city.jpg"
+            alt="Futuristic Eco-Tech Metropolis Climate Shield"
+            className="w-full h-full object-cover object-center filter brightness-95 contrast-105 scale-100 group-hover:scale-105 transition-transform duration-1000 ease-out"
+          />
+          {/* Subtle Ambient Vignette & Gradient */}
+          <div className="absolute inset-0 bg-gradient-to-t from-aura-darkest via-black/30 to-black/50 pointer-events-none" />
 
-      {/* 3D Atmospheric HUD Overlay Badge */}
-      <div className="absolute top-4 left-4 z-10 flex flex-wrap items-center gap-2 pointer-events-none">
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-aura-surface/80 backdrop-blur-md border border-white/10 text-xs font-mono text-cyan-400">
-          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-          <span>3D PROCEDURAL METROPOLIS</span>
+          {/* Holographic Hexagonal Grid Ambient Overlay */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-cyan-500/10 via-transparent to-transparent pointer-events-none" />
         </div>
-        <div className="px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-xs font-mono text-gray-300">
-          DATA-DRIVEN SHADER & FOG
+      ) : (
+        /* View Mode 2: Interactive Three.js 60FPS WebGL Canvas */
+        <div ref={mountRef} className="w-full h-full cursor-grab active:cursor-grabbing" />
+      )}
+
+      {/* Top Left: HUD Status Badges */}
+      <div className="absolute top-5 left-5 z-20 flex flex-wrap items-center gap-2 pointer-events-none">
+        <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/70 backdrop-blur-xl border border-cyan-400/30 text-xs font-mono text-cyan-300 shadow-glow">
+          <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping" />
+          <span className="font-bold">AUTONOMOUS CLIMATE-SHIELD GRID</span>
+        </div>
+        <div className="px-3.5 py-1.5 rounded-full bg-black/60 backdrop-blur-xl border border-white/10 text-xs font-mono text-emerald-400 flex items-center gap-1.5">
+          <ShieldCheck className="w-3.5 h-3.5" />
+          <span>STATUS: ACTIVE DEFENSE</span>
         </div>
       </div>
 
-      {/* Telemetry quick bar on bottom of 3D Canvas */}
-      <div className="absolute bottom-4 left-4 right-4 z-10 flex flex-wrap items-center justify-between gap-2 p-3 rounded-xl bg-aura-darkest/75 backdrop-blur-md border border-aura-border text-xs font-mono">
-        <div className="flex items-center gap-4 text-gray-300">
-          <div>
-            <span className="text-gray-500">CITY: </span>
-            <span className="text-white font-bold">{data.city}</span>
+      {/* Top Right: Mode Switcher (Cinematic vs Interactive 3D) */}
+      <div className="absolute top-5 right-5 z-20 flex items-center gap-1 p-1 rounded-full bg-black/75 backdrop-blur-xl border border-white/10 shadow-2xl">
+        <button
+          onClick={() => setViewMode("cinematic")}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono font-bold transition-all ${
+            viewMode === "cinematic"
+              ? "bg-cyan-500 text-black shadow-glow"
+              : "text-gray-400 hover:text-white"
+          }`}
+        >
+          <Sparkles className="w-3.5 h-3.5" />
+          <span>8K CINEMATIC</span>
+        </button>
+        <button
+          onClick={() => setViewMode("3d")}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono font-bold transition-all ${
+            viewMode === "3d"
+              ? "bg-cyan-500 text-black shadow-glow"
+              : "text-gray-400 hover:text-white"
+          }`}
+        >
+          <Orbit className="w-3.5 h-3.5" />
+          <span>3D WEBGL</span>
+        </button>
+      </div>
+
+      {/* Bottom Telemetry Bar Overlay */}
+      <div className="absolute bottom-5 left-5 right-5 z-20 flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-black/80 backdrop-blur-xl border border-white/10 text-xs font-mono shadow-2xl">
+        <div className="flex flex-wrap items-center gap-5 text-gray-200">
+          <div className="flex items-center gap-2">
+            <span className="text-gray-500">CITY:</span>
+            <span className="text-white font-black tracking-wide text-sm">{data.city}</span>
           </div>
-          <div>
-            <span className="text-gray-500">TEMP: </span>
-            <span className={data.temperature > 35 ? "text-orange-400 font-bold" : "text-emerald-400"}>
+          <div className="flex items-center gap-2">
+            <span className="text-gray-500">TEMP:</span>
+            <span className={data.temperature > 35 ? "text-orange-400 font-bold" : "text-emerald-400 font-bold"}>
               {data.temperature}°C
             </span>
+            <span className="text-gray-500 text-[10px]">({data.apparentTemperature}°C Heat Index)</span>
           </div>
-          <div>
-            <span className="text-gray-500">AQI: </span>
-            <span className={data.aqi > 100 ? "text-amber-400 font-bold" : "text-cyan-400"}>
-              {data.aqi}
+          <div className="flex items-center gap-2">
+            <span className="text-gray-500">AIR PURITY:</span>
+            <span className={data.aqi > 100 ? "text-amber-400 font-bold" : "text-cyan-400 font-bold"}>
+              {data.aqi} AQI
             </span>
+            <span className="text-gray-500 text-[10px]">({data.pm25} µg/m³ PM2.5)</span>
           </div>
-          <div>
-            <span className="text-gray-500">UV: </span>
-            <span className={data.uvIndex > 7 ? "text-purple-400 font-bold" : "text-yellow-400"}>
-              {data.uvIndex}
+          <div className="flex items-center gap-2">
+            <span className="text-gray-500">SOLAR UV:</span>
+            <span className={data.uvIndex > 7 ? "text-purple-400 font-bold" : "text-yellow-400 font-bold"}>
+              UV {data.uvIndex}
             </span>
           </div>
         </div>
-        <div className="text-right text-gray-400 hidden sm:block">
-          Interactive Parallax • 60 FPS Low-Poly Instancing
+
+        <div className="text-right text-[11px] text-gray-400 hidden lg:flex items-center gap-2">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          <span>REAL-TIME OPEN-METEO INGESTION ACTIVE</span>
         </div>
       </div>
     </div>

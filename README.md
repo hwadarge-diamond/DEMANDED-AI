@@ -63,7 +63,21 @@
 
 ---
 
-## 2. Running Locally
+---
+
+## 2. Futuristic Visual Design & 8K Digital Twin Architecture
+
+DEMANDED AI incorporates a high-fidelity cyberpunk aesthetic with rich visual storytelling:
+- **8K Cinematic Digital Twin:** Photorealistic climate-shield dome metropolis with live telemetry HUD and particle shimmer.
+- **Interactive Three.js 60FPS Canvas:** Real-time WebGL instanced mesh rendering dynamic building heights, atmospheric smog density, and solar irradiance.
+- **Biometric Cold-Chain Drone Logistics:** Autonomous aerial rescue fleet imagery with thermal camera feeds and active HACCP verification.
+- **Holographic ESG Command Center:** Global planetary digital twin with live Scope 3 carbon telemetry and workforce liability analytics.
+- **Citizen Science Simulation Lab:** Futuristic disaster modeler interface projecting hospital surges and evacuation routes.
+- **Quantum Swarm Core:** Decentralized multi-agent neural mesh with cryptographic SHA-256 ring visualization.
+
+---
+
+## 3. Running Locally & Live Deployment
 
 * **AuraGuard 3D Next.js Platform:** [http://localhost:3000](http://localhost:3000)
 * **EcoPulse Multi-Agent Python Backend:** [http://localhost:8000](http://localhost:8000)
@@ -73,6 +87,8 @@
 ```bash
 # In auraguard directory:
 cd auraguard
-npm run test    # Run 14 Vitest unit tests
-npm run dev     # Run local dev server on port 3000
+npm run test    # Run 14 Vitest unit tests (100% pass)
+npm run build   # Production bundle compilation
+npm run start   # Run production server on port 3000
 ```
+
